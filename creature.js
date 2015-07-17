@@ -1,23 +1,12 @@
 var Creature = function (modelObject) {
-	this.mesh = new THREE.Mesh( modelObject.geometry, modelObject.material );
-	this.x = Math.random()*100-50;
-	this.z = Math.random()*100-50;
-	this.angle = Math.random()*2*Math.PI;
-	this.setScale(1);
-	this.angleSpeed = 0.1;
-	this.speed = 2;
-	this.mesh.position.set(this.x,0,this.z);
-	this.mesh.rotation.y = this.angle;
-	scene.add( this.mesh ) ;
+	Entity.call(this, modelObject);
 	
 	this.directions = [0,0,0,0]; // up left down right wasd
 	this.isPlayer = false;
+	this.heldThings = [];
 };
 
-Creature.prototype.setScale = function (newScale) {
-	this.scale = newScale;
-	this.mesh.scale.set(this.scale,this.scale ,this.scale );
-}
+Creature.prototype = Object.create(Entity.prototype);
 
 Creature.prototype.update = function () {
 	this.handleControls();
@@ -45,6 +34,13 @@ Creature.prototype.handleControls = function () {
 		this.x -= Math.cos(this.angle) * this.speed;
 		this.z -= Math.sin(this.angle) * this.speed;
 	}
+}
+
+Creature.prototype.setHeld = function (entity) {
+	this.heldThings.push(entity);
+}
+Creature.prototype.heldFractionOf = function (entity) {
+	return (1.001 + this.heldThings.indexOf(entity)) / this.heldThings.length; // make float...
 }
 
 Creature.prototype.updateCameraOn = function (cam) {

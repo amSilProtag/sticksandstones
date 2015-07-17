@@ -2,7 +2,6 @@
 collect stuff
 fps
 full screen
-fix inheritance ?
 */
 
 var camera, scene, renderer, objects;
@@ -20,13 +19,16 @@ var playerEntity = null;
 
 var boundingFunction = function (coordArray) {
 	var angle = Math.atan2(coordArray[1], coordArray[0]);
-	var dist = Math.sqrt(Math.pow(coordArray[0], 2) + Math.pow(coordArray[1], 2));
+	var dist = getDistance(0, coordArray[0],0, coordArray[1]);
 	var boundDistance = 25*8;
 	if (dist > boundDistance) {
 		coordArray[0] = Math.cos(angle)*boundDistance;
 		coordArray[1] = Math.sin(angle)*boundDistance;
 	}
 	return coordArray;
+}
+function getDistance (x1,x2,y1,y2) {
+	return Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(y2-y1, 2));
 }
 
 window.onload = function () {
@@ -48,24 +50,45 @@ function begin() {
 	floorMesh.position.set(0,0,0);
 	scene.add( floorMesh ) ;
 	
-	var thing = new Creeper(models["greenCreep"]);
-	entities.push(thing);
+	for (var i = 0;i<10;i++) {
+		var enemyIndex = Math.floor(Math.random() * 4);
+		switch (enemyIndex) {
+			case 0:
+				var thing = new Creeper(models["greenCreep"]);
+				entities.push(thing);
+				break;
+			case 1:
+				var thing = new Slug(models["rockSlug"], "rock");
+				entities.push(thing);
+				break;
+			case 2:
+				var thing = new Slug(models["emptySlug"], "empty");
+				entities.push(thing);
+				break;
+			case 3:
+				var thing = new Slug(models["spikeSlug"], "spike");
+				entities.push(thing);
+				break;
+			default:
+				console.log("invalid enemey");
+		}
+	}
 	
-	var thing = new Slug(models["rockSlug"]);
-	entities.push(thing);
-	
-	var thing = new Slug(models["emptySlug"]);
-	entities.push(thing);
-	
-	var thing = new Slug(models["spikeSlug"]);
-	entities.push(thing);
-	
-	var thing = new Entity(models["stick"]);
-	entities.push(thing);
-	
-	var thing = new Entity(models["gold"]);
-	console.log(thing.mesh);
-	entities.push(thing);
+		for (var i = 0;i<10;i++) {
+		var enemyIndex = Math.floor(Math.random() * 2);
+		switch (enemyIndex) {
+			case 0:
+				var thing = new Entity(models["stick"]);
+				entities.push(thing);
+				break;
+			case 1:
+				var thing = new Entity(models["gold"]);
+				entities.push(thing);	
+				break;
+			default:
+				console.log("invalid resource");
+		}
+	}
 	
 	var thing = new Minion(models["minion"]);
 	entities.push(thing);
