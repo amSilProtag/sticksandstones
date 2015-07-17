@@ -1,3 +1,10 @@
+/*
+collect stuff
+fps
+full screen
+fix inheritance ?
+*/
+
 var camera, scene, renderer, objects;
 
 var width = 640;
@@ -47,6 +54,11 @@ function begin() {
 	var thing = new Slug(models["rockSlug"]);
 	entities.push(thing);
 	
+	var thing = new Slug(models["emptySlug"]);
+	entities.push(thing);
+	
+	var thing = new Slug(models["spikeSlug"]);
+	entities.push(thing);
 	
 	var thing = new Entity(models["stick"]);
 	entities.push(thing);

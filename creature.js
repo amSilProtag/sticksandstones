@@ -1,4 +1,3 @@
-
 var Creature = function (modelObject) {
 	this.mesh = new THREE.Mesh( modelObject.geometry, modelObject.material );
 	this.x = Math.random()*100-50;

@@ -9,6 +9,8 @@ function loadModels () {
 	loadModel("Model/floor.dae", "floor");
 	loadModel("Model/greenCreep.dae", "greenCreep");
 	loadModel("Model/rockSlug.dae", "rockSlug");
+	loadModel("Model/emptySlug.dae", "emptySlug");
+	loadModel("Model/spikeSlug.dae", "spikeSlug");
 	loadModel("Model/minion.dae", "minion");
 	loadModel("Model/grassWorld2.dae", "grassWorld");
 	loadModel("Model/stick.dae", "stick");

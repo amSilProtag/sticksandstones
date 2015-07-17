@@ -9,7 +9,7 @@ Minion.prototype.update = function() {
 	//this.handleControls();
 	
 	var time = Date.now() * 0.01;
-	this.mesh.position.y = 1 + Math.cos(time) * 1;
+	//this.mesh.position.y = 1 + Math.cos(time) * 1;
 	
 	Creature.prototype.update.call(this);
 }
