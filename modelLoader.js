@@ -5,10 +5,14 @@ var loader = new THREE.ColladaLoader();
 loader.options.convertUpAxis = true;
 
 function loadModels () {
+	loadModel("Model/gold2.dae", "gold");
 	loadModel("Model/floor.dae", "floor");
 	loadModel("Model/greenCreep.dae", "greenCreep");
 	loadModel("Model/rockSlug.dae", "rockSlug");
-	return;	
+	loadModel("Model/minion.dae", "minion");
+	loadModel("Model/grassWorld2.dae", "grassWorld");
+	loadModel("Model/stick.dae", "stick");
+	
 }
 
 function loadModel(fileName, arrayName) {
@@ -22,6 +26,7 @@ function loadModel(fileName, arrayName) {
 				models[arrayName] = {geometry: child.geometry, material: child.material};
 			}
 		});
+		console.log("loaded: "+fileName + " " + arrayName + " " + models[arrayName]);
 		checkAllLoaded();
 	});
 }
