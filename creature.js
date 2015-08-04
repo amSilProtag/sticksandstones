@@ -4,11 +4,15 @@ var Creature = function (modelObject) {
 	this.directions = [0,0,0,0]; // up left down right wasd
 	this.isPlayer = false;
 	this.heldThings = [];
+	this.shouldFollow = false;
+	this.isFollowingEntity = null;
 };
 
 Creature.prototype = Object.create(Entity.prototype);
 
 Creature.prototype.update = function () {
+	if (this.shouldFollow)
+		this.handleFollowing();
 	this.handleControls();
 	var newCoords = boundingFunction([this.x,this.z]);
 	this.x = newCoords[0];
@@ -17,6 +21,34 @@ Creature.prototype.update = function () {
 	this.mesh.position.x = this.x;
 	this.mesh.position.z = this.z;
 	this.mesh.rotation.y = -this.angle;
+}
+
+Creature.prototype.handleFollowing = function () {
+	if (this.isFollowingEntity === null) {
+		if (getDistance(this.x,playerEntity.x,this.z,playerEntity.z) < 15) {
+			this.startFollowing(playerEntity);
+		}
+	} else {
+		this.directions[0] = 1;
+		this.directions[2] = 0;
+		var targetAngle = Math.atan2( this.z - this.isFollowingEntity.z, this.x - this.isFollowingEntity.x );
+		var currentAngle = wrapAngle(targetAngle - this.angle);
+		
+
+		if ( currentAngle > 0) {
+			this.directions[1] = 1;
+			this.directions[3] = 0;
+		} else {
+			this.directions[1] = 0;
+			this.directions[3] = 1;	
+		}
+	}
+}
+
+Creature.prototype.startFollowing = function (followObject) {
+	this.isFollowingEntity = followObject;
+	this.setScale(2.0);
+	console.log("creature is now following");
 }
 
 Creature.prototype.handleControls = function () {
@@ -44,8 +76,8 @@ Creature.prototype.heldFractionOf = function (entity) {
 }
 
 Creature.prototype.updateCameraOn = function (cam) {
-	var cameraDistance = 50;
-	var cameraHeight = 30;
+	var cameraDistance = 80;
+	var cameraHeight = 70;
 	cam.position.set(this.x - Math.cos(this.angle) * cameraDistance, cameraHeight, this.z - Math.sin(this.angle) * cameraDistance);
 	cam.lookAt( this.mesh.position);
 }

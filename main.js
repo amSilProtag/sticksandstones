@@ -6,8 +6,8 @@ full screen
 
 var camera, scene, renderer, objects;
 
-var width = 640;
-var height = 480;
+var width = window.innerWidth;
+var height = window.innerHeight;
 
 var clock = new THREE.Clock();
 var morphs = [];
@@ -31,6 +31,16 @@ function getDistance (x1,x2,y1,y2) {
 	return Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(y2-y1, 2));
 }
 
+function wrapAngle (angle) {
+  
+  if (angle < 0)
+    
+    return - ((-angle+Math.PI) % (Math.PI*2)) + Math.PI;
+ 
+  return angle % (Math.PI*2) - Math.PI;
+
+}
+
 window.onload = function () {
 	console.log("start" + Date.now())
 	init();
@@ -50,6 +60,13 @@ function begin() {
 	floorMesh.position.set(0,0,0);
 	scene.add( floorMesh ) ;
 	
+	for (var i = 0;i<5;i++) {
+
+		var thing = new SmallCreeper(models["greenCreep"]);
+		entities.push(thing);
+	}
+
+
 	for (var i = 0;i<10;i++) {
 		var enemyIndex = Math.floor(Math.random() * 4);
 		switch (enemyIndex) {
@@ -74,21 +91,26 @@ function begin() {
 		}
 	}
 	
-		for (var i = 0;i<10;i++) {
+		for (var i = 0;i<120;i++) {
 		var enemyIndex = Math.floor(Math.random() * 2);
 		switch (enemyIndex) {
 			case 0:
 				var thing = new Entity(models["stick"]);
+				thing.setBlockColor(0x9E6D28);
 				entities.push(thing);
+				
 				break;
 			case 1:
 				var thing = new Entity(models["gold"]);
+				thing.setBlockColor(0xFFFF42);
 				entities.push(thing);	
 				break;
 			default:
 				console.log("invalid resource");
 		}
 	}
+	var thing = new Foundation(models["gold"]);
+	entities.push(thing);
 	
 	var thing = new Minion(models["minion"]);
 	entities.push(thing);

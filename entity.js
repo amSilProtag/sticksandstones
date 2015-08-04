@@ -14,6 +14,11 @@ var Entity = function (modelObject) {
 	scene.add( this.mesh ) ;
 	
 	this.heldBy = null;
+	this.blockColor = 0xffffff;
+}
+
+Entity.prototype.setBlockColor = function (pColor) {
+	this.blockColor = pColor;
 }
 
 Entity.prototype.setScale = function (newScale) {
@@ -28,15 +33,17 @@ Entity.prototype.update = function () {
 			this.heldBy = playerEntity;
 			this.heldBy.setHeld(this);
 			this.setScale (2);
-			console.log(this.heldBy.heldFractionOf.call(this.heldBy, this));
+			//console.log(this.heldBy.heldFractionOf.call(this.heldBy, this));
 		}
 	} else {
+                var radius = 10;
+                var heightRange = 15;
 		var time = Date.now() * 0.001;
 		var offset = this.heldBy.heldFractionOf(this) * Math.PI*2;
-		this.x = this.heldBy.x + Math.cos(time+offset) * 10;
-		this.y = 10;
-		this.z = this.heldBy.z + Math.sin(time+offset) * 10;
-		
+		this.x = this.heldBy.x + Math.cos(time+offset) * radius*2;
+		this.z = this.heldBy.z + Math.sin(time+offset) * radius*2;
+		this.y = (this.heldBy.heldFractionOf(this) * 100) % heightRange + 5;
+
 		this.mesh.rotation.x += 0.1;
 		this.mesh.position.x = this.x;
 		this.mesh.position.y = this.y;
